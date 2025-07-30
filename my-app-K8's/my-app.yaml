@@ -55,5 +55,5 @@ spec:
       volumes:
         - name: custom-html-pages
           configMap:
-            name: my-html-file
+            name: my-html-files
       terminationGracePeriodSeconds: 30
