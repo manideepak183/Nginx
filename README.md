@@ -1,12 +1,14 @@
 This Repository includes installation of Kuberenetes from scratch using WSL ubuntu distro and deploying a sample nginx application and accessing the application on your local endpoint.
 
 Prerequisites needed for this K8's installation & deployment. 
+=
 1. Windows10/11 compatible to install WSL.
 2. internet connectivity to download all binaries, packages and dependancies.
 3. sudo access to your Windoes machine
 4. make sure you have atleast 4 CPU and 8GB RAM 
 
 High level steps for deployment.
+=
 1. Installing Ubuntu distro on your windows using WSL
 2. Setup docker and other pre-req's on your ubuntu.
 3. Setup multi-node kubernetes cluster using KIND type.
@@ -17,6 +19,7 @@ High level steps for deployment.
 
 
 Installation of Ubuntu distro using WSL(If you already have Ubuntu instance, you can skip this Ubuntu setup)
+=
 1. Download WSl2 on your windows machine.
 2. Reboot your system
 3. open CMD and run wsl --list --online
@@ -29,6 +32,7 @@ Installation of Ubuntu distro using WSL(If you already have Ubuntu instance, you
 
 
 Pre-requisites for your K8s cluster.
+=
 1. Install docker with below command.
      sudo apt update
      sudo apt install -y docker.io
@@ -60,38 +64,40 @@ Pre-requisites for your K8s cluster.
 
 
 Setup multi-node kubernetes cluster using KIND, Kubernetes in docker.
+=
 1. Here we are installing Kubernetes cluster on our ubuntu using Kind.
 2. Download latest Kind availiable release from internet to your machine.
      curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
      chmod +x ./kind
-     ## Here we are moving binary to PATH to recognise binary globally on your VM.
+     Here we are moving binary to PATH to recognise binary globally on your VM.
      sudo mv ./kind /usr/local/bin/kind 
      kind version
-3. install kubectl of required version.
+4. install kubectl of required version.
      curl -LO "https://dl.k8s.io/release/v1.31.0/bin/linux/amd64/kubectl"
      chmod +x kubectl
      sudo mv kubectl /usr/local/bin/
      kubectl version
-4. Now we are good to create multi node cluster.
-5. create a manifest for cluster with nodes like below content as kind-cluster.yaml(manifest present in Kubernetes directory).
-6. Now run below comamnd to create a kind cluster
+5. Now we are good to create multi node cluster.
+6. create a manifest for cluster with nodes like below content as kind-cluster.yaml(manifest present in Kubernetes directory).
+7. Now run below comamnd to create a kind cluster
      kind create cluster --name mani --config kind-cluster.yaml
-7. It takes some time to download latest node images. once done you can check your cluster.
+8. It takes some time to download latest node images. once done you can check your cluster.
      kubectl get nodes -owide
-8. This will create 3 docker containers in your VM.
+9. This will create 3 docker containers in your VM.
     manideepak@ANAPARTM01:~/WSL$ docker ps -a
     CONTAINER ID   IMAGE                  COMMAND                  CREATED         STATUS         PORTS                       NAMES
     a7e473dec6a8   kindest/node:v1.30.0   "/usr/local/bin/entr…"   2 minutes ago   Up 2 minutes   127.0.0.1:39913->6443/tcp   mani-control-plane
     35f6bfc4092c   kindest/node:v1.30.0   "/usr/local/bin/entr…"   2 minutes ago   Up 2 minutes                               mani-worker
     d26404f512b4   kindest/node:v1.30.0   "/usr/local/bin/entr…"   2 minutes ago   Up 2 minutes                               mani-worker2
-9. You can execute into container shell to verify containers.
+10. You can execute into container shell to verify containers.
     docker exec -it mani-control-plane cat /etc/os-release
-10. By this your Cluster installation is completed.
+11. By this your Cluster installation is completed.
 
 
 
 
 Install add-ons like calico for networking and a nginx ingress controller.
+=
 1. Calico is used as network plugin here for advanced routed using network policies, BG Protocols.
 2. apply manifest present for Calico.
 3. wait for calico controller and calico pods to up.
@@ -106,7 +112,7 @@ Install add-ons like calico for networking and a nginx ingress controller.
 
 
 Deploying sample static Nginx app including postgres:
-
+=
 1. create a namespace for more security.
      kubectl create ns my-app
 2. create my-app deployment and postgres stateful set
